@@ -1,0 +1,22 @@
+/*
+ * Minimal keymap for SuperMini NRF52840 OLED test.
+ * No keyboard matrix — this just satisfies ZMK's requirement
+ * for a keymap file to compile successfully.
+ */
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/ext_power.h>
+
+/ {
+    keymap {
+        compatible = "zmk,keymap";
+
+        default_layer {
+            bindings = <
+                &none
+            >;
+        };
+    };
+};

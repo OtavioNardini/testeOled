@@ -1,0 +1,52 @@
+/*
+ * SuperMini NRF52840 — OLED Test Overlay (128x32, single board)
+ *
+ * Wiring:
+ *   OLED VCC → VCC (3.3V regulated)
+ *   OLED GND → GND
+ *   OLED SDA → D2 (P0.17)
+ *   OLED SCL → D3 (P0.20)
+ */
+
+/ {
+    chosen {
+        zmk,display = &oled;
+    };
+
+    /* VCC cutoff — P0.13 drives the LDO EN pin on SuperMini.
+     * ZMK will cut power to the OLED automatically during sleep. */
+    ext_power: ext_power@0 {
+        compatible = "zmk,ext-power-generic";
+        label = "EXT_POWER";
+        control-gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
+    };
+
+    /* Single dummy key to satisfy ZMK matrix requirement */
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-direct";
+        label = "KSCAN";
+        input-gpios = <&gpio0 31 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+    };
+};
+
+&i2c0 {
+    status = "okay";
+    sda-pin = <17>;  /* P0.17 → D2 */
+    scl-pin = <20>;  /* P0.20 → D3 */
+
+    oled: ssd1306@3c {
+        compatible = "solomon,ssd1306fb";
+        reg = <0x3c>;
+        label = "DISPLAY";
+        width = <128>;
+        height = <32>;
+        segment-offset = <0>;
+        page-offset = <0>;
+        display-offset = <0>;
+        multiplex-ratio = <31>;
+        prechargep = <0x22>;
+        segment-remap;
+        com-invdir;
+        com-sequential;
+    };
+};

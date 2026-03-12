@@ -1,0 +1,3 @@
+include:
+  - board: supermini_nrf52840
+    shield: supermini_oled_test
